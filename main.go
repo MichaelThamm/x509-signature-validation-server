@@ -2,53 +2,83 @@ package main
 
 import (
 	"crypto"
-	"crypto/ecdsa"
+	"crypto/rsa"
+	"crypto/sha256"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 )
 
-func readInputs() (script []byte, signature []byte, certificatePath string, err error) {
-	// Read the bash script, its signature, and the path to the X.509 certificate
-	// You can choose the mechanism for IPC or file reading as needed
-	// Return the script, signature, and certificate path
+func readScript(filename string) (signature string, result string, err error) {
+	content, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return
+	}
+
+	// Convert the content to string
+	scriptContent := string(content)
+
+	// Split the content into lines
+	lines := strings.Split(scriptContent, "\n")
+
+	// Extract the signature from the first line
+	if len(lines) > 0 {
+		signature = strings.TrimSpace(lines[0])
+	}
+
+	// Join the remaining lines to reconstruct the script content
+	result = strings.Join(lines[1:], "\n")
+
 	return
 }
 
-func verifySignature(script []byte, signature []byte, publicKey *ecdsa.PublicKey) bool {
-	// Verify the signature using the public key
-	hashed := crypto.SHA256.New()
-	hashed.Write(script)
-	err := ecdsa.VerifyASN1(publicKey, hashed.Sum(nil), signature)
-	return err == nil
-}
-
-func extractPublicKey(certPath string) (*ecdsa.PublicKey, error) {
-	// Load the X.509 certificate and extract the public key
-	certPEM, err := ioutil.ReadFile(certPath)
+func verifySignature(signature, scriptContent, certificatePath string) (bool, error) {
+	// Decode the base64-encoded signature
+	signatureBytes, err := base64.StdEncoding.DecodeString(signature)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 
+	// Read the X.509 certificate
+	certPEM, err := ioutil.ReadFile(certificatePath)
+	if err != nil {
+		return false, err
+	}
+
+	// Parse the certificate PEM block
 	block, _ := pem.Decode(certPEM)
 	if block == nil {
-		return nil, fmt.Errorf("failed to parse certificate PEM")
+		return false, fmt.Errorf("failed to parse certificate PEM")
 	}
 
+	// Parse the certificate
 	cert, err := x509.ParseCertificate(block.Bytes)
 	if err != nil {
-		return nil, err
+		return false, fmt.Errorf("failed to parse certificate: %v", err)
 	}
 
-	publicKey, ok := cert.PublicKey.(*ecdsa.PublicKey)
-	if !ok {
-		return nil, fmt.Errorf("invalid public key type")
-	}
+	// Extract the public key from the certificate
+    switch pubKey := cert.PublicKey.(type) {
+    case *rsa.PublicKey:
+        // Continue with verification using RSA public key
+        fmt.Printf("Public Key Type: %T\n", pubKey)
+        hashed := scriptHash(scriptContent)
+        err := rsa.VerifyPKCS1v15(pubKey, crypto.SHA256, hashed[:], signatureBytes)
+        return err == nil, nil
+    default:
+        return false, fmt.Errorf("unsupported public key type: %T", pubKey)
+    }
+}
 
-	return publicKey, nil
+func scriptHash(scriptContent string) []byte {
+	// In this example, we use SHA-256 hash function
+	hashed := sha256.Sum256([]byte(scriptContent))
+	return hashed[:]
 }
 
 func executeScript(script []byte) ([]byte, error) {
@@ -58,31 +88,29 @@ func executeScript(script []byte) ([]byte, error) {
 }
 
 func main() {
-	script, signature, certPath, err := readInputs()
+	if len(os.Args) != 3 {
+		err := fmt.Errorf("Usage: ./main <bash_script> <certificate_path>")
+		fmt.Println("Error reading inputs:", err)
+		return
+	}
+
+	scriptFile := os.Args[1]
+	certPath := os.Args[2]
+	fmt.Println(scriptFile, certPath)
+	
+	signature, scriptContent, err := readScript(scriptFile)
+	fmt.Println("script:", scriptContent)
+	fmt.Println("Signature:", signature)
 	if err != nil {
 		fmt.Println("Error reading inputs:", err)
 		os.Exit(1)
 	}
 
-	publicKey, err := extractPublicKey(certPath)
+	isValid, err := verifySignature(signature, scriptContent, certPath)
 	if err != nil {
-		fmt.Println("Error extracting public key:", err)
-		os.Exit(1)
+		fmt.Println("Error:", err)
+		return
 	}
 
-	if verifySignature(script, signature, publicKey) {
-		fmt.Println("Code is valid to be executed.")
-
-		output, err := executeScript(script)
-		if err != nil {
-			fmt.Println("Error executing script:", err)
-			os.Exit(1)
-		}
-
-		fmt.Println("Output of the script:")
-		fmt.Println(string(output))
-	} else {
-		fmt.Println("Invalid signature. Code execution denied.")
-		os.Exit(1)
-	}
+	fmt.Println("Signature is valid:", isValid)
 }
