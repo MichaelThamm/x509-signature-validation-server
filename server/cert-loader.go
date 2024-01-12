@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 )
 
-// loadCertificate loads the x509 certificate from the specified path
+// LoadCertificate loads the x509 certificate from the specified path
 func LoadCertificate(certPath string) (*x509.Certificate, error) {
 	// Read the X.509 certificate
 	certPEM, err := ioutil.ReadFile(certPath)

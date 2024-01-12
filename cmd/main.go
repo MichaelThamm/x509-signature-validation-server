@@ -6,7 +6,6 @@ import (
 )
 
 const CERT_PATH string = "keys/x509-certificate.pem"
-const PORT int = 8080
 
 func main() {
 
@@ -18,5 +17,5 @@ func main() {
 	}
 
 	// Start the server and handle incoming requests
-	server.StartServer(cert, PORT)
+	server.StartServer(cert)
 }

@@ -1,9 +1,7 @@
 #!/bin/bash
 
-cd ../server
-
 # Set the output binary name
-OUTPUT_BINARY="x509-signature-validation-server"
+OUTPUT_BINARY="x509-validation-server"
 
 # Build the Go server
-go build -o $OUTPUT_BINARY
+go build -o $OUTPUT_BINARY ./cmd

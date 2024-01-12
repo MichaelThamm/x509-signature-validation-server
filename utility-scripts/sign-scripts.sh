@@ -13,7 +13,7 @@ for script_file in $UNSIGNED_DIR/*.sh; do
         # Get script base name
         script_base_name=$(basename "$script_file")
         
-        # Read the content of the script excluding the shebang line
+        # Read the content of the script excluding the first line
         script_content=$(tail -n +1 "$script_file")
 
         # Sign the script, convert to readable, and remove line breaks
