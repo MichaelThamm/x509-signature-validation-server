@@ -1,3 +1,5 @@
 *.pem
 /signed-scripts
 x509-signature-validation-server
+# Temporary
+/server-code
