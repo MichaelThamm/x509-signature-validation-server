@@ -14,6 +14,8 @@ import (
 	"strings"
 )
 
+const CERT_PATH string = "keys/x509-certificate.pem"
+
 func readScript(filename string) (signature string, result string, err error) {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -66,7 +68,6 @@ func verifySignature(signature, scriptContent, certificatePath string) (bool, er
     switch pubKey := cert.PublicKey.(type) {
     case *rsa.PublicKey:
         // Continue with verification using RSA public key
-        fmt.Printf("Public Key Type: %T\n", pubKey)
         hashed := scriptHash(scriptContent)
         err := rsa.VerifyPKCS1v15(pubKey, crypto.SHA256, hashed[:], signatureBytes)
         return err == nil, nil
@@ -81,36 +82,45 @@ func scriptHash(scriptContent string) []byte {
 	return hashed[:]
 }
 
-func executeScript(script []byte) ([]byte, error) {
-	cmd := exec.Command("/bin/bash", "-c", string(script))
+func executeScript(script string) ([]byte, error) {
+	cmd := exec.Command("/bin/bash", "-c", script)
 	output, err := cmd.CombinedOutput()
 	return output, err
 }
 
 func main() {
-	if len(os.Args) != 3 {
-		err := fmt.Errorf("Usage: ./main <bash_script> <certificate_path>")
+	if len(os.Args) != 2 {
+		err := fmt.Errorf("Usage: ./main <bash_script>")
 		fmt.Println("Error reading inputs:", err)
 		return
 	}
 
 	scriptFile := os.Args[1]
-	certPath := os.Args[2]
-	fmt.Println(scriptFile, certPath)
 	
 	signature, scriptContent, err := readScript(scriptFile)
-	fmt.Println("script:", scriptContent)
-	fmt.Println("Signature:", signature)
+	
 	if err != nil {
 		fmt.Println("Error reading inputs:", err)
 		os.Exit(1)
 	}
 
-	isValid, err := verifySignature(signature, scriptContent, certPath)
+	isValid, err := verifySignature(signature, scriptContent, CERT_PATH)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	fmt.Println("Signature is valid:", isValid)
+	fmt.Println("Signature is", map[bool]string{true: "valid", false: "invalid"}[isValid])
+
+	if isValid {
+		output, err := executeScript(scriptContent)
+		if err != nil {
+			// Handle the error
+			fmt.Println("Error executing script:", err)
+		} else {
+			// Process the output
+			fmt.Println("Script output:")
+			fmt.Println(string(output))
+		}
+	}
 }

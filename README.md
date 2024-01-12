@@ -14,7 +14,7 @@ Let's say I want to browse to [www.markdownguide.org](https://www.markdownguide.
 
 # Code Explanation
 * The utility-scripts folder contains the shell scripts which do the following:
-  * Create the private, public, and x509 cert using openssl library
+  * Create the private, public, and x509 certificate using the openssl library
   * Sign the scripts in the usigned-scripts directory using the SHA-256 hash function and the private key
     * They are then placed in the signed-scripts directory
 * The main.go file accepts 2 arguments:
