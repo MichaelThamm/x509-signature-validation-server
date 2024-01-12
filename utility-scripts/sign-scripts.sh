@@ -4,6 +4,8 @@ UNSIGNED_DIR="unsigned-scripts"
 SIGNED_DIR="signed-scripts"
 KEY_DIR="keys"
 
+mkdir -p "$SIGNED_DIR"
+
 # Loop through all .sh scripts in the current directory
 for script_file in $UNSIGNED_DIR/*.sh; do
     if [ -f "$script_file" ]; then
