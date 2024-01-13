@@ -1,5 +1,0 @@
-dAlYhf6jE+fLmzdLlnPT9W/0a6CtyffMnq/hlEa+7yX/Np/3E8ngF7wh3+LliNlnzzmkz2bVm0XjR1panUCNnqH4ZoS8oByZzLbsEkkOwBlCn/xYTxlI6ZNutG61SjPQU5JZLPVXiSqyAHazAW/T221TIJPpLUY+gNcPtdfsWD8/wYWNzwjkJi5fIZ1OVp6G4dtu72FUKVU77av4+3Pq0Jm9TtfaO/T0hEn1b2O2YYuxIxVXV+eivNkdxHyn9bi/j4h0H5rIU61eVt1kkwG5zTH249/+TJz6mq7gwZTeRR6p8SOAv6iG8VD0cHAJ+zlx9vCG30l7oHMC6cWR7L7WqA==
-
-
-echo "This script has"
-echo "prefixed newlines."

@@ -24,3 +24,22 @@ for script_file in $UNSIGNED_DIR/*.sh; do
         echo "$script_content" >> $TEST_DIR/"$script_base_name"
     fi
 done
+
+# Script 7
+script_content=$(tail -n +1 "$UNSIGNED_DIR/7.sh")
+signature=$(openssl dgst -sha256 -sign $KEY_DIR/private-key.pem "$UNSIGNED_DIR/7.sh" | base64 | tr -d '\n')
+echo "$signature" > "$TEST_DIR/7.sh"
+echo "$signature" >> "$TEST_DIR/7.sh"
+echo "$script_content" >> "$TEST_DIR/7.sh"
+# Script 9
+script_content=$(tail -n +1 "$UNSIGNED_DIR/9.sh")
+script_content="${script_content%?}X"
+signature=$(openssl dgst -sha256 -sign $KEY_DIR/private-key.pem "$UNSIGNED_DIR/9.sh" | base64 | tr -d '\n')
+echo "$signature" > "$TEST_DIR/9.sh"
+echo "$script_content" >> "$TEST_DIR/9.sh"
+# Script 10
+script_content=$(tail -n +1 "$UNSIGNED_DIR/10.sh")
+signature=$(openssl dgst -sha256 -sign $KEY_DIR/private-key.pem "$UNSIGNED_DIR/10.sh" | base64 | tr -d '\n')
+signature="${signature%?}"
+echo "$signature" > "$TEST_DIR/10.sh"
+echo "$script_content" >> "$TEST_DIR/10.sh"

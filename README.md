@@ -8,11 +8,13 @@ A server which will verify the signature of a bash script in order to decide if 
   * openssl - 3.0.2
 
 # Repository Explanation
-* The __utility-scripts__ directory contains the shell scripts which do the following:
+* The __utility-scripts__ directory contains the bash scripts which do the following:
   1. __create-certs.sh__ -> Create the private and x509 certificate using the openssl library
   2. __sign-scripts.sh__ -> Sign the scripts in the usigned-scripts directory using the SHA-256 hash function and the private key
      * They are then placed in the test-scripts directory
   3. __build-server-binary.sh__ -> Build the binary
+  4. __run-tests.sh__ -> Execute the test suite
+* __However__, for convenience the bash script __run.sh__ in the project root does all of this for you
 
 * To build the server binary:
   * In the project root directory, execute: 
@@ -25,9 +27,9 @@ A server which will verify the signature of a bash script in order to decide if 
   ```
   ./x509-validation-server
   ```
-  * In the project root directory, execute:
+  * Within another shell, execute:
   ```
-  cat signed-scripts/1.sh | curl -X POST --data-binary @- http://localhost:8080/execute
+  curl -X POST --data-binary @<bash_script_path> http://localhost:8080/execute
   ```
 
 # Test Case Inspection
