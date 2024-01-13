@@ -33,7 +33,15 @@ A server which will verify the signature of a bash script in order to decide if 
   ```
 
 # Test Case Inspection
-| Pass | Fail |
-| --- | ----------- |
-| Header | Title |
-| Paragraph | Text |
+| Script | Status | Purpose/Reason |
+| -- | ---- | ------------ |
+| 1 | Pass | Basic script |
+| 2 | Pass | RSA functions |
+| 3 | Pass | New lines |
+| 4 | Pass | Special characters |
+| 5 | Fail | 500 status code - Error executing script |
+| 6 | Fail | RSA verification error |
+| 7 | Fail | RSA verification error |
+| 8 | Fail | RSA verification error |
+| 9 | Fail | RSA verification error |
+| 10 | Fail | 500 status code - Illegal signature format |
