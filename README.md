@@ -11,7 +11,7 @@ A server which will verify the signature of a bash script in order to decide if 
 * The __utility-scripts__ directory contains the shell scripts which do the following:
   1. __create-certs.sh__ -> Create the private and x509 certificate using the openssl library
   2. __sign-scripts.sh__ -> Sign the scripts in the usigned-scripts directory using the SHA-256 hash function and the private key
-     * They are then placed in the signed-scripts directory
+     * They are then placed in the test-scripts directory
   3. __build-server-binary.sh__ -> Build the binary
 
 * To build the server binary:

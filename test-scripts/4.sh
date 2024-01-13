@@ -1,0 +1,2 @@
+Ur1cYeTXB5Ps/3X5Cb3+e5WWz5eqLvzY6G4zRAnklxlKJnEEjy8L5PCPmShiHGGLgnKlcY8GBrJHfrMzT3fWzc5aj18LRwezc4dWktv/Ogz+nBfmUMo2yEPP8Tx34t4IBViWdIk91CGpba2RaBa1kpvVYByhgNDRhUaV20XmQxF5gBxXxK1vhIP+qo5NjH07NwjAm/6R7qKaV1RgMt+iQ1mcHlaOr/bJOe3v2Cigyz+nMk8ZeK9tXaqpFkhd0zaOwxfB5/B2ts2YJRJhjvZ9rxA/G5w/5phvplYVlfqEOTa66Si0yjemZw5xZgW6FVZM4PwSJzxIAdnTUcnbMJ7GYw==
+echo "Script with special characters: ~!@#$%^&*()_+{}[]|;:'\",.<>/?"

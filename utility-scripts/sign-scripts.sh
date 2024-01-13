@@ -1,10 +1,10 @@
 #!/bin/bash
 
 UNSIGNED_DIR="unsigned-scripts"
-SIGNED_DIR="signed-scripts"
+TEST_DIR="test-scripts"
 KEY_DIR="keys"
 
-mkdir -p "$SIGNED_DIR"
+mkdir -p "$TEST_DIR"
 
 # Loop through all .sh scripts in the current directory
 for script_file in $UNSIGNED_DIR/*.sh; do
@@ -20,7 +20,7 @@ for script_file in $UNSIGNED_DIR/*.sh; do
         signature=$(openssl dgst -sha256 -sign $KEY_DIR/private-key.pem "$script_file" | base64 | tr -d '\n')
         
         # Create a new signed script with shebang, signature, and content
-        echo "$signature" > $SIGNED_DIR/"$script_base_name"
-        echo "$script_content" >> $SIGNED_DIR/"$script_base_name"
+        echo "$signature" > $TEST_DIR/"$script_base_name"
+        echo "$script_content" >> $TEST_DIR/"$script_base_name"
     fi
 done

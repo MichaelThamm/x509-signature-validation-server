@@ -56,7 +56,7 @@ func SplitScript(script string) (signature string, restOfScript string, err erro
 
 	// Extract the signature from the first line
 	if len(lines) == 0 {
-		return "", "", errors.New("scriptWithSignature is empty")
+		return "", "", errors.New("Script with signature is empty")
 	}
 	signature = strings.TrimSpace(lines[0])
 	// Join the remaining lines

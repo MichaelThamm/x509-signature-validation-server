@@ -1,3 +1,2 @@
-*.pem
-/signed-scripts
+/keys
 x509-validation-server

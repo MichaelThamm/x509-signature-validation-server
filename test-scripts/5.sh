@@ -1,0 +1,3 @@
+b0LhkkPmrAo+lHO8/1q30YsCBgxxy8B3UR0R8sfk4p9xYQ4rNLom9H1E9eiPB/VeklLQidW5ivPiroEc5J0yc1PENYFOn7sPzM2RTqVIUFooOG7IY2LuOXkjEfJp1iQoINZaCxuUWuZLgjnyo8kAo6LhqHJ4FfDX+nhRYbTbDHMV+x3lJkGHoe5sxW+c+cVSiqwHvcG3/7UYIJa/n8cmk7Gd955KaYlTxgiCp4+iahLaU+EIDdi5fwLIfSF38eaxNEsmMyjFF28VdO5Sv2+VMIKQiQn2Z6rjD7pfZPvgSdQtRwkx4hRbopE1RPSixFzsqZfJPFhFHH7bGx/6UBiJsQ==
+echo "This script has a syntax error
+# This should fail execution
