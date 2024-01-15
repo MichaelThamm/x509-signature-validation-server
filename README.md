@@ -45,3 +45,6 @@ A server which will verify the signature of a bash script in order to decide if 
 | 8 | Fail | RSA verification error |
 | 9 | Fail | RSA verification error |
 | 10 | Fail | 500 status code - Illegal signature format |
+
+# Stretch Goals
+* __Switch to stretch-goals branch to test stretch goals__
