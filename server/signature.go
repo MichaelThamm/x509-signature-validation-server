@@ -6,16 +6,22 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"log"
 )
 
 // verifySignature verifies the signature using the public key from the certificate
-func VerifySignature(signature string, script string, cert *x509.Certificate) (bool, error) {
+func VerifySignature(checkcodesign bool, signature string, script string, cert *x509.Certificate) (bool, error) {
+	if checkcodesign && !HasCodeSigningExtension(cert) {
+		log.Printf("Error in EKU")
+		return false, errors.New("Certificate does not have the required code signing Extended Key Usage")
+	}
+	
 	// Decode the base64-encoded signature
 	signatureBytes, err := base64.StdEncoding.DecodeString(signature)
 	if err != nil {
-		log.Printf("Error decoding signature: %v\n", err)
+		log.Printf("Failed to decode signature: %v\n", err)
 		return false, err
 	}
 	
@@ -31,11 +37,22 @@ func VerifySignature(signature string, script string, cert *x509.Certificate) (b
 		}
 		return true, nil
 	default:
-		return false, fmt.Errorf("unsupported public key type: %T", pubKey)
+		return false, fmt.Errorf("Unsupported public key type: %T", pubKey)
 	}
 }
 
 func ScriptHash(scriptContent string) []byte {
 	hashed := sha256.Sum256([]byte(scriptContent))
 	return hashed[:]
+}
+
+// Check if the certificate has the Code Signing extension
+func HasCodeSigningExtension(cert *x509.Certificate) bool {
+	for _, extKeyUsage := range cert.ExtKeyUsage {
+		// x509.ExtKeyUsageCodeSigning == 3 (for code signing)
+		if extKeyUsage == x509.ExtKeyUsageCodeSigning {
+			return true
+		}
+	}
+	return false
 }
