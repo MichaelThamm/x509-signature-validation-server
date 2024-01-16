@@ -47,4 +47,11 @@ A server which will verify the signature of a bash script in order to decide if 
 | 10 | Fail | 500 status code - Illegal signature format |
 
 # Stretch Goals
-* __Switch to stretch-goals branch to test stretch goals__
+1. Check the certificate extension for code signing
+2. Accept concurrent requests
+3. Verify signature from a set of certificates
+* Assuming you have ran the __run.sh__ script (this sets up certificates, test scripts, and builds the binary), execute:
+  * ```
+      ./utility-scripts/check-stretch-goals.sh
+    ```
+  * This will test the functionality of the stretch goals

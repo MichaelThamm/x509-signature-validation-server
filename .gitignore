@@ -1,3 +1,4 @@
-/keys
+/keys/*.pem
+/keys/*.csr
 /test-scripts
 x509-validation-server
