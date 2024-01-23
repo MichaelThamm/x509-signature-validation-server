@@ -1,7 +1,7 @@
 # x509-validation-server
 A server which will verify the signature of a bash script in order to decide if the script will be executed or not
 * Check out the rendered [OpenAPI Spec](https://app.swaggerhub.com/apis-docs/MIKETHAMM44/x-509_validation_server/1.0.11) or download the [OpenAPI YAML file here](https://github.com/MichaelThamm/x509-validation-server/blob/main/openapi.yaml) and import it into the [Swagger Editor](https://editor.swagger.io/).
-* ![server-functionality-diagram](./functionality.drawio)
+* ![server-functionality-diagram](functionality.png)
 
 # Requirements
 * Golang - go1.18.1 linux/amd64
