@@ -3,7 +3,7 @@ info:
   title: x509 Validation Server
   description: |-
     This is a simple REST server written in Golang using the gin framework which will verify the signature of a bash script in order to decide if the script will be executed or not. Some features include: checking the certificate extension for code signing, accepting concurrent requests, and verifying the signature from a set of certificates.
-  version: 1.0.11
+  version: 1.0.0
 servers:
   - url: http://localhost:8080
 tags:
