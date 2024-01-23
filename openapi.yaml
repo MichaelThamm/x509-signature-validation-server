@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: x509 Validation Server
+  description: |-
+    This is a simple REST server written in Golang using the gin framework which will verify the signature of a bash script in order to decide if the script will be executed or not. Some features include: checking the certificate extension for code signing, accepting concurrent requests, and verifying the signature from a set of certificates.
+  version: 1.0.11
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: execute
+    description: Execute bash scripts if validated
+paths:
+  /execute:
+    post:
+      tags:
+        - execute
+      summary: Update an existing pet
+      description: Update an existing pet by Id
+      operationId: updatePet
+      parameters:
+        - name: code-sign
+          in: query
+          description: Specify whether code signing is enabled
+          schema:
+            type: boolean
+            default: false
+        - name: key-dir
+          in: query
+          description: Validate the signature with a directory/set of certificates
+          schema:
+            type: boolean
+            default: false
+        - name: id
+          in: query
+          description: The ID of the script you want to execute
+          schema:
+            type: integer
+            default: 1
+      
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                script:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Plain text including validity and executed script response
+              examples:
+                validExecution:
+                  value: |
+                    The script (ID 1) is VALID (using certificate: keys/codesign-cert.pem) and was executed:
+                    Hello, world!
+                invalidExecution:
+                  value: |
+                    The script (ID 1) is INVALID (using certificate: keys/codesign-cert.pem) and will NOT be executed
+        '500':
+          description: Unsuccessful response
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Plain text error describing the reason for failure
+              examples:
+                illegalSignature:
+                  value: |
+                    Failed to decode signature: illegal base64 data at input byte 343
+                verificationError:
+                  value: |
+                    Verification failed: crypto/rsa: verification error
+                    Validity: false
