@@ -14,9 +14,8 @@ paths:
     post:
       tags:
         - execute
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
+      summary: Execute a bash script
+      operationId: ExecuteScript
       parameters:
         - name: code-sign
           in: query
